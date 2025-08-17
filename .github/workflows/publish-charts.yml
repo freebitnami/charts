@@ -85,10 +85,12 @@ jobs:
       - name: Build chart index
         run: |
           cd gh-pages
-          cp index.yaml old-index.yaml
-          helm repo index --url ${OCI_REPOSITORY_URL} --merge old-index.yaml .
-          sed -E -i 's#(oci://ghcr.io/freebitnami/charts/.+)-(.+)\.tgz#\1:\2#' index.yaml
-          rm old-index.yaml *.tgz
+          if ls *.tgz > /dev/null 2>&1; then
+            cp index.yaml old-index.yaml
+            helm repo index --url ${OCI_REPOSITORY_URL} --merge old-index.yaml .
+            sed -E -i 's#(oci://ghcr.io/freebitnami/charts/.+)-(.+)\.tgz#\1:\2#' index.yaml
+            rm old-index.yaml *.tgz
+          fi
       - name: Commit and push updated chart index
         uses: actions-js/push@master
         with:
