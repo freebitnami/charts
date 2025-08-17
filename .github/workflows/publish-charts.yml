@@ -4,7 +4,8 @@ on: # rebuild any PRs and main branch changes
     branches:
       - main
 env:
-  HELM_VERSION: 3.8.1
+  # renovate: datasource=github-releases depName=helm/helm
+  HELM_VERSION: v3.8.1
   OCI_REPOSITORY_URL: oci://ghcr.io/freebitnami/charts
 # Remove all permissions by default.
 permissions: {}
@@ -31,7 +32,7 @@ jobs:
           fetch-depth: 0
       - name: Install helm
         run: |
-          HELM_TARBALL="helm-v${HELM_VERSION}-linux-amd64.tar.gz"
+          HELM_TARBALL="helm-${HELM_VERSION}-linux-amd64.tar.gz"
           curl -SsLfO "https://get.helm.sh/${HELM_TARBALL}" && sudo tar xf "$HELM_TARBALL" --strip-components 1 -C /usr/local/bin
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@v3
