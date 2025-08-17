@@ -10,7 +10,7 @@ on:
       - reopened
 env:
   # renovate: datasource=github-releases depName=helm/helm
-  HELM_VERSION: v3.8.1
+  HELM_VERSION: v3.18.5
   OCI_REPOSITORY_URL: oci://ghcr.io/freebitnami/charts
 # Remove all permissions by default.
 permissions: {}
