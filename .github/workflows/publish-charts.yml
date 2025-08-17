@@ -1,0 +1,97 @@
+name: Publish Helm charts
+on: # rebuild any PRs and main branch changes
+  push:
+    branches:
+      - main
+env:
+  HELM_VERSION: 3.8.1
+  OCI_REPOSITORY_URL: oci://ghcr.io/freebitnami/charts
+# Remove all permissions by default.
+permissions: {}
+jobs:
+  build_charts:
+    if: ${{ github.repository_owner == 'freebitnami' }}
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+      packages: write
+    steps:
+      - name: Check out main branch
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          path: main
+          submodules: 'true'
+      - name: Check out gh-pages branch
+        uses: actions/checkout@v5
+        with:
+          ref: gh-pages
+          path: gh-pages
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Install helm
+        run: |
+          HELM_TARBALL="helm-v${HELM_VERSION}-linux-amd64.tar.gz"
+          curl -SsLfO "https://get.helm.sh/${HELM_TARBALL}" && sudo tar xf "$HELM_TARBALL" --strip-components 1 -C /usr/local/bin
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ github.token }}
+      - name: Build new/updated charts
+        run: |
+          set -eu
+
+          cd main/bitnami/bitnami
+
+          find . -type f -exec sed -i "s#oci://registry-1.docker.io/bitnamicharts#${OCI_REPOSITORY_URL}#" {} \;
+          find . -type f -name Chart.yaml -exec sed -i -E 's#https://github.com/bitnami/charts/tree/main/bitnami/.+#https://github.com/freebitnami/charts#' {} \;
+
+          for chart_name in *; do
+            if [[ ! -d "${chart_name}" ]]; then
+              continue
+            fi
+            chart_dependencies=($(yq '[.dependencies[].name] | join(" ")' ${chart_name}/Chart.yaml))
+            if (( ${#chart_dependencies[@]} )); then
+              printf "${chart_name} %s\n" "${chart_dependencies[@]}" >> dependency-graph
+            fi
+          done
+          
+          for chart_name in $(tsort dependency-graph | tac); do
+            if [[ ! -f ${chart_name}/Chart.yaml ]]; then
+              continue
+            fi
+
+            chart_version=$(yq .version ${chart_name}/Chart.yaml)
+            chart_artifact_metadata=$(docker buildx imagetools inspect ghcr.io/freebitnami/charts/${chart_name}:${chart_version} 2>&1 || :)
+
+            if [[ "${chart_artifact_metadata}" == "ERROR: ghcr.io/freebitnami/charts/${chart_name}:${chart_version}: not found" ]]; then 
+              echo "Building chart ${chart_name}:${chart_version}..."
+              cd ${chart_name}
+              helm dependency update
+              helm package --destination ../../../gh-pages .
+              helm push ../../../gh-pages/${chart_name}-${chart_version}.tgz ${OCI_REPOSITORY_URL}
+              cd ..
+            else
+              echo "Skip building chart ${chart_name}:${chart_version} as it's already in the registry"
+              entry_in_chart_index=$(yq ".entries.${chart_name}[] | select(.version == \"${chart_version}\")" ../../../gh-pages/index.yaml)
+              if [[ -z "${entry_in_chart_index}" ]]; then
+                helm pull --destination ../../../gh-pages ${OCI_REPOSITORY_URL}/${chart_name} --version ${chart_version}
+              fi
+            fi
+          done
+      - name: Build chart index
+        run: |
+          cd gh-pages
+          cp index.yaml old-index.yaml
+          helm repo index --url ${OCI_REPOSITORY_URL} --merge old-index.yaml .
+          sed -E -i 's#(oci://ghcr.io/freebitnami/charts/.+)-(.+)\.tgz#\1:\2#' index.yaml
+          rm old-index.yaml *.tgz
+      - name: Commit and push updated chart index
+        uses: actions-js/push@master
+        with:
+          message: Update chart index
+          branch: gh-pages
+          directory: gh-pages
+          github_token: ${{ github.token }}
