@@ -1,8 +1,9 @@
 name: Publish Helm charts
-on: # rebuild any PRs and main branch changes
+on:
   push:
     branches:
       - main
+      - renovate/*
 env:
   # renovate: datasource=github-releases depName=helm/helm
   HELM_VERSION: v3.8.1
@@ -17,11 +18,10 @@ jobs:
       contents: write
       packages: write
     steps:
-      - name: Check out main branch
+      - name: Check out ref branch
         uses: actions/checkout@v5
         with:
-          ref: main
-          path: main
+          path: ref-branch
           submodules: 'true'
       - name: Check out gh-pages branch
         uses: actions/checkout@v5
@@ -44,7 +44,7 @@ jobs:
         run: |
           set -eu
 
-          cd main/bitnami/bitnami
+          cd ref-branch/bitnami/bitnami
 
           find . -type f -exec sed -i "s#oci://registry-1.docker.io/bitnamicharts#${OCI_REPOSITORY_URL}#" {} \;
           find . -type f -name Chart.yaml -exec sed -i -E 's#https://github.com/bitnami/charts/tree/main/bitnami/.+#https://github.com/freebitnami/charts#' {} \;
@@ -72,7 +72,9 @@ jobs:
               cd ${chart_name}
               helm dependency update
               helm package --destination ../../../gh-pages .
-              helm push ../../../gh-pages/${chart_name}-${chart_version}.tgz ${OCI_REPOSITORY_URL}
+              if [[ "${GITHUB_REF_NAME}" == 'main' ]]; then
+                helm push ../../../gh-pages/${chart_name}-${chart_version}.tgz ${OCI_REPOSITORY_URL}
+              fi
               cd ..
             else
               echo "Skip building chart ${chart_name}:${chart_version} as it's already in the registry"
@@ -88,10 +90,11 @@ jobs:
           if ls *.tgz > /dev/null 2>&1; then
             cp index.yaml old-index.yaml
             helm repo index --url ${OCI_REPOSITORY_URL} --merge old-index.yaml .
-            sed -E -i 's#(oci://ghcr.io/freebitnami/charts/.+)-(.+)\.tgz#\1:\2#' index.yaml
+            sed -E -i "s#(${OCI_REPOSITORY_URL}/.+)-(.+)\.tgz#\1:\2#" index.yaml
             rm old-index.yaml *.tgz
           fi
       - name: Commit and push updated chart index
+        if: ${{ github.ref_name == 'main' }}
         uses: actions-js/push@master
         with:
           message: Update chart index
