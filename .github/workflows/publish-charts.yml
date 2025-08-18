@@ -64,25 +64,37 @@ jobs:
               continue
             fi
 
-            chart_version=$(yq .version ${chart_name}/Chart.yaml)
-            chart_artifact_metadata=$(docker buildx imagetools inspect ghcr.io/freebitnami/charts/${chart_name}:${chart_version} 2>&1 || :)
+            cd ${chart_name}
 
-            if [[ "${chart_artifact_metadata}" == "ERROR: ghcr.io/freebitnami/charts/${chart_name}:${chart_version}: not found" ]]; then 
+            chart_version=$(yq .version Chart.yaml)
+
+            if [[ "${GITHUB_REF_NAME}" == 'main' ]]; then
+              # only process chart if not already present in the registry
+              chart_artifact_metadata=$(docker buildx imagetools inspect ghcr.io/freebitnami/charts/${chart_name}:${chart_version} 2>&1 || :)
+
+              # TODO improve detection of missing artifact: a different error message doesn't always mean that the chart is already in the registry
+              if [[ "${chart_artifact_metadata}" == "ERROR: ghcr.io/freebitnami/charts/${chart_name}:${chart_version}: not found" ]]; then 
+                echo "Building and pushing chart ${chart_name}:${chart_version} to OCI repository..."
+                helm dependency update
+                helm package --destination ../../../gh-pages .
+                helm push ../../../gh-pages/${chart_name}-${chart_version}.tgz ${OCI_REPOSITORY_URL}
+              else
+                echo "Skip building chart ${chart_name}:${chart_version} as it's already in the registry"
+                entry_in_chart_index=$(yq ".entries.${chart_name}[] | select(.version == \"${chart_version}\")" ../../../gh-pages/index.yaml)
+                if [[ -z "${entry_in_chart_index}" ]]; then
+                  helm pull --destination ../../../gh-pages ${OCI_REPOSITORY_URL}/${chart_name} --version ${chart_version}
+                fi
+              fi
+            else
+              # process chart unconditionally, but based on local charts and do not push to registry and do not update gh-pages branch
               echo "Building chart ${chart_name}:${chart_version}..."
-              cd ${chart_name}
+              # modify "repository" property only when value is ${OCI_REPOSITORY_URL}, due to exception with kube-prometheus
+              yq -i '.dependencies = (.dependencies.[] as $dependency ireduce ([]; . + $dependency + {"repository": $dependency.repository | sub("^oci://.+$", "file://../" + $dependency.name)}))' Chart.yaml
               helm dependency update
               helm package --destination ../../../gh-pages .
-              if [[ "${GITHUB_REF_NAME}" == 'main' ]]; then
-                helm push ../../../gh-pages/${chart_name}-${chart_version}.tgz ${OCI_REPOSITORY_URL}
-              fi
-              cd ..
-            else
-              echo "Skip building chart ${chart_name}:${chart_version} as it's already in the registry"
-              entry_in_chart_index=$(yq ".entries.${chart_name}[] | select(.version == \"${chart_version}\")" ../../../gh-pages/index.yaml)
-              if [[ -z "${entry_in_chart_index}" ]]; then
-                helm pull --destination ../../../gh-pages ${OCI_REPOSITORY_URL}/${chart_name} --version ${chart_version}
-              fi
             fi
+
+            cd ..
           done
       - name: Build chart index
         run: |
@@ -92,6 +104,7 @@ jobs:
             helm repo index --url ${OCI_REPOSITORY_URL} --merge old-index.yaml .
             sed -E -i "s#(${OCI_REPOSITORY_URL}/.+)-(.+)\.tgz#\1:\2#" index.yaml
             rm old-index.yaml *.tgz
+            # XXX maybe run `git diff` for logging purposes?
           fi
       - name: Commit and push updated chart index
         if: ${{ github.ref_name == 'main' }}
