@@ -64,25 +64,40 @@ jobs:
               continue
             fi
 
-            chart_version=$(yq .version ${chart_name}/Chart.yaml)
-            chart_artifact_metadata=$(docker buildx imagetools inspect ghcr.io/freebitnami/charts/${chart_name}:${chart_version} 2>&1 || :)
+            cd ${chart_name}
 
-            if [[ "${chart_artifact_metadata}" == "ERROR: ghcr.io/freebitnami/charts/${chart_name}:${chart_version}: not found" ]]; then 
-              echo "Building chart ${chart_name}:${chart_version}..."
-              cd ${chart_name}
-              helm dependency update
-              helm package --destination ../../../gh-pages .
-              if [[ "${GITHUB_REF_NAME}" == 'main' ]]; then
-                helm push ../../../gh-pages/${chart_name}-${chart_version}.tgz ${OCI_REPOSITORY_URL}
+            chart_version=$(yq .version Chart.yaml)
+
+            if [[ "${GITHUB_REF_NAME}" == 'main' ]]; then
+              # Only process chart if not already present in the registry
+              chart_artifact_metadata=$(docker buildx imagetools inspect ghcr.io/freebitnami/charts/${chart_name}:${chart_version} 2>&1 || :)
+
+              if grep -E '^Digest:' <<< "${chart_artifact_metadata}" > /dev/null; then 
+                echo "Skip building chart ${chart_name}:${chart_version} as it's already in the registry"
+                entry_in_chart_index=$(yq ".entries.${chart_name}[] | select(.version == \"${chart_version}\")" ${GITHUB_WORKSPACE}/gh-pages/index.yaml)
+                if [[ -z "${entry_in_chart_index}" ]]; then
+                  helm pull --destination ${GITHUB_WORKSPACE}/gh-pages ${OCI_REPOSITORY_URL}/${chart_name} --version ${chart_version}
+                fi
+              elif [[ "${chart_artifact_metadata}" == "ERROR: ghcr.io/freebitnami/charts/${chart_name}:${chart_version}: not found" ]]; then 
+                echo "Building and pushing chart ${chart_name}:${chart_version} to OCI repository..."
+                helm dependency update
+                helm package --destination ${GITHUB_WORKSPACE}/gh-pages .
+                helm push ${GITHUB_WORKSPACE}/gh-pages/${chart_name}-${chart_version}.tgz ${OCI_REPOSITORY_URL}
+              else
+                echo "Unexpected output of command \"docker buildx imagetools inspect ghcr.io/freebitnami/charts/${chart_name}:${chart_version}\"" >&2
+                echo "${chart_artifact_metadata}" >&2]
+                exit 1
               fi
-              cd ..
             else
-              echo "Skip building chart ${chart_name}:${chart_version} as it's already in the registry"
-              entry_in_chart_index=$(yq ".entries.${chart_name}[] | select(.version == \"${chart_version}\")" ../../../gh-pages/index.yaml)
-              if [[ -z "${entry_in_chart_index}" ]]; then
-                helm pull --destination ../../../gh-pages ${OCI_REPOSITORY_URL}/${chart_name} --version ${chart_version}
-              fi
+              # Process chart unconditionally, but using local assets only and do not push to OCI registry
+              echo "Building chart ${chart_name}:${chart_version}..."
+              # Modify "repository" property only when value is oci:// URL, for charts already using a file:// dependency
+              yq -i '.dependencies = (.dependencies.[] as $dependency ireduce ([]; . + $dependency + {"repository": $dependency.repository | sub("^oci://.+$", "file://../" + $dependency.name)}))' Chart.yaml
+              helm dependency update
+              helm package --destination ${GITHUB_WORKSPACE}/gh-pages .
             fi
+
+            cd ..
           done
       - name: Build chart index
         run: |
