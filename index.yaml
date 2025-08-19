@@ -4455,6 +4455,48 @@ entries:
       category: Infrastructure
       images: |
         - name: oauth2-proxy
+          image: docker.io/bitnami/oauth2-proxy:7.12.0-debian-12-r0
+      licenses: Apache-2.0
+      tanzuCategory: clusterUtility
+    apiVersion: v2
+    appVersion: 7.12.0
+    created: "2025-08-19T21:03:34.134702781Z"
+    dependencies:
+    - condition: redis.enabled
+      name: redis
+      repository: oci://ghcr.io/freebitnami/charts
+      version: 22.x.x
+    - name: common
+      repository: oci://ghcr.io/freebitnami/charts
+      tags:
+      - bitnami-common
+      version: 2.x.x
+    description: A reverse proxy and static file server that provides authentication
+      using Providers (Google, GitHub, and others) to validate accounts by email,
+      domain or group.
+    digest: db862d69c1067bc869eb3d1ac55b43d229db10f08f1633b5b3d45f4635177240
+    home: https://bitnami.com
+    icon: https://dyltqmyl993wv.cloudfront.net/assets/stacks/oauth2-proxy/img/oauth2-proxy-stack-220x234.png
+    keywords:
+    - kubernetes
+    - oauth
+    - oauth2
+    - authentication
+    - google
+    - github
+    maintainers:
+    - name: Broadcom, Inc. All Rights Reserved.
+      url: https://github.com/bitnami/charts
+    name: oauth2-proxy
+    sources:
+    - https://github.com/freebitnami/charts
+    urls:
+    - oci://ghcr.io/freebitnami/charts/oauth2-proxy:8.0.2
+    version: 8.0.2
+  - annotations:
+      category: Infrastructure
+      images: |
+        - name: oauth2-proxy
           image: docker.io/bitnami/oauth2-proxy:7.11.0-debian-12-r2
       licenses: Apache-2.0
       tanzuCategory: clusterUtility
@@ -4536,6 +4578,43 @@ entries:
     - oci://ghcr.io/freebitnami/charts/odoo:28.2.10
     version: 28.2.10
   opensearch:
+  - annotations:
+      category: Analytics
+      images: |
+        - name: opensearch
+          image: docker.io/bitnami/opensearch:3.1.0-debian-12-r2
+        - name: opensearch-dashboards
+          image: docker.io/bitnami/opensearch-dashboards:3.1.0-debian-12-r2
+        - name: os-shell
+          image: docker.io/bitnami/os-shell:12-debian-12-r50
+      licenses: Apache-2.0
+      tanzuCategory: service
+    apiVersion: v2
+    appVersion: 3.1.0
+    created: "2025-08-19T21:03:34.141598567Z"
+    dependencies:
+    - name: common
+      repository: oci://ghcr.io/freebitnami/charts
+      tags:
+      - bitnami-common
+      version: 2.x.x
+    description: OpenSearch is a scalable open-source solution for search, analytics,
+      and observability. Features full-text queries, natural language processing,
+      custom dictionaries, amongst others.
+    digest: 1683b2a4f7e5d7ec6d23399f2831f8eb0d5086da191d52fca2b60313f8933cb6
+    home: https://bitnami.com
+    icon: https://dyltqmyl993wv.cloudfront.net/assets/stacks/opensearch/img/opensearch-stack-220x234.png
+    keywords:
+    - opensearch
+    maintainers:
+    - name: Broadcom, Inc. All Rights Reserved.
+      url: https://github.com/bitnami/charts
+    name: opensearch
+    sources:
+    - https://github.com/freebitnami/charts
+    urls:
+    - oci://ghcr.io/freebitnami/charts/opensearch:2.0.9
+    version: 2.0.9
   - annotations:
       category: Analytics
       images: |
@@ -6337,4 +6416,4 @@ entries:
     urls:
     - oci://ghcr.io/freebitnami/charts/zookeeper:13.8.7
     version: 13.8.7
-generated: "2025-08-19T08:45:08.691914562Z"
+generated: "2025-08-19T21:03:34.126704616Z"
