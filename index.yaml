@@ -138,6 +138,56 @@ entries:
       images: |
         - name: apisix
           image: docker.io/bitnami/apisix:3.13.0-debian-12-r4
+        - name: apisix-ingress-controller
+          image: docker.io/bitnami/apisix-ingress-controller:1.8.4-debian-12-r14
+        - name: os-shell
+          image: docker.io/bitnami/os-shell:12-debian-12-r50
+      licenses: Apache-2.0
+      tanzuCategory: application
+    apiVersion: v2
+    appVersion: 3.13.0
+    created: "2025-08-20T20:38:28.444783389Z"
+    dependencies:
+    - condition: etcd.enabled
+      name: etcd
+      repository: oci://ghcr.io/freebitnami/charts
+      version: 12.x.x
+    - name: common
+      repository: oci://ghcr.io/freebitnami/charts
+      tags:
+      - bitnami-common
+      version: 2.x.x
+    description: Apache APISIX is high-performance, real-time API Gateway. Features
+      load balancing, dynamic upstream, canary release, circuit breaking, authentication,
+      observability, amongst others.
+    digest: d88aa2a737cb452938d6706ac3738eddbcfb7019ef368e79a0b88ec7af9e9465
+    home: https://bitnami.com
+    icon: https://dyltqmyl993wv.cloudfront.net/assets/stacks/apisix/img/apisix-stack-220x234.png
+    keywords:
+    - apisix
+    - ingress
+    - openresty
+    - controller
+    - http
+    - web
+    - www
+    - reverse proxy
+    maintainers:
+    - name: Broadcom, Inc. All Rights Reserved.
+      url: https://github.com/bitnami/charts
+    name: apisix
+    sources:
+    - https://github.com/freebitnami/charts
+    - https://github.com/freebitnami/charts
+    - https://github.com/freebitnami/charts
+    urls:
+    - oci://ghcr.io/freebitnami/charts/apisix:6.0.0
+    version: 6.0.0
+  - annotations:
+      category: Infrastructure
+      images: |
+        - name: apisix
+          image: docker.io/bitnami/apisix:3.13.0-debian-12-r4
         - name: apisix-dashboard
           image: docker.io/bitnami/apisix-dashboard:3.0.1-debian-12-r80
         - name: apisix-ingress-controller
@@ -620,6 +670,76 @@ entries:
       category: DeveloperTools
       images: |
         - name: chainloop-artifact-cas
+          image: docker.io/bitnami/chainloop-artifact-cas:1.42.0-debian-12-r0
+        - name: chainloop-control-plane
+          image: docker.io/bitnami/chainloop-control-plane:1.42.0-debian-12-r0
+        - name: chainloop-control-plane-migrations
+          image: docker.io/bitnami/chainloop-control-plane-migrations:1.42.0-debian-12-r0
+        - name: dex
+          image: docker.io/bitnami/dex:2.43.1-debian-12-r8
+      license: Apache-2.0
+      tanzuCategory: application
+    apiVersion: v2
+    appVersion: 1.42.0
+    created: "2025-08-20T20:38:28.458102191Z"
+    dependencies:
+    - name: common
+      repository: oci://ghcr.io/freebitnami/charts
+      tags:
+      - bitnami-common
+      version: 2.x.x
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: oci://ghcr.io/freebitnami/charts
+      version: 16.x.x
+    - condition: development
+      name: vault
+      repository: oci://ghcr.io/freebitnami/charts
+      version: 1.x.x
+    description: Chainloop is an open-source Software Supply Chain control plane,
+      a single source of truth for metadata and artifacts, plus a declarative attestation
+      process.
+    digest: 865ef4de113e0a8945cd0dbf5d127731b71ff85fbb26d76605ba977846c694b2
+    home: https://bitnami.com
+    icon: https://dyltqmyl993wv.cloudfront.net/assets/stacks/chainloop/img/chainloop-stack-220x234.png
+    keywords:
+    - chainloop
+    - evidence-store
+    - supply-chain-security
+    - devops
+    - devsecops
+    - security
+    - compliance
+    - cyclonedx
+    - spdx
+    - sbom
+    - attestation
+    - oss-compliance
+    - in-toto
+    - slsa
+    - sbom-distribution
+    - open-source-licensing
+    - slsa-provenance
+    - metadata-platform
+    - sbom-discovery
+    - regulated-industry
+    maintainers:
+    - name: Broadcom, Inc. All Rights Reserved.
+      url: https://github.com/bitnami/charts
+    name: chainloop
+    sources:
+    - https://github.com/freebitnami/charts
+    - https://github.com/bitnami/containers/tree/main/bitnami/chainloop-control-plane
+    - https://github.com/bitnami/containers/tree/main/bitnami/chainloop-control-plane-migrations
+    - https://github.com/bitnami/containers/tree/main/bitnami/chainloop-artifact-cas
+    - https://github.com/chainloop-dev/chainloop
+    urls:
+    - oci://ghcr.io/freebitnami/charts/chainloop:4.0.73
+    version: 4.0.73
+  - annotations:
+      category: DeveloperTools
+      images: |
+        - name: chainloop-artifact-cas
           image: docker.io/bitnami/chainloop-artifact-cas:1.41.1-debian-12-r0
         - name: chainloop-control-plane
           image: docker.io/bitnami/chainloop-control-plane:1.41.1-debian-12-r0
@@ -1051,6 +1171,44 @@ entries:
     - oci://ghcr.io/freebitnami/charts/consul:11.4.32
     version: 11.4.32
   contour:
+  - annotations:
+      category: Infrastructure
+      images: |
+        - name: contour
+          image: docker.io/bitnami/contour:1.32.1-debian-12-r0
+        - name: envoy
+          image: docker.io/bitnami/envoy:1.34.5-debian-12-r0
+        - name: nginx
+          image: docker.io/bitnami/nginx:1.29.1-debian-12-r0
+      licenses: Apache-2.0
+      tanzuCategory: clusterUtility
+    apiVersion: v2
+    appVersion: 1.32.1
+    created: "2025-08-20T20:38:28.46714653Z"
+    dependencies:
+    - name: common
+      repository: oci://ghcr.io/freebitnami/charts
+      tags:
+      - bitnami-common
+      version: 2.x.x
+    description: Contour is an open source Kubernetes ingress controller that works
+      by deploying the Envoy proxy as a reverse proxy and load balancer.
+    digest: 95683056d0fd8513664cb9a5a2d120f7b14880c5a30470cad4d33b5408db0e35
+    home: https://bitnami.com
+    icon: https://dyltqmyl993wv.cloudfront.net/assets/stacks/contour/img/contour-stack-220x234.png
+    keywords:
+    - ingress
+    - envoy
+    - contour
+    maintainers:
+    - name: Broadcom, Inc. All Rights Reserved.
+      url: https://github.com/bitnami/charts
+    name: contour
+    sources:
+    - https://github.com/freebitnami/charts
+    urls:
+    - oci://ghcr.io/freebitnami/charts/contour:21.1.4
+    version: 21.1.4
   - annotations:
       category: Infrastructure
       images: |
@@ -1496,6 +1654,46 @@ entries:
       category: Infrastructure
       images: |
         - name: envoy
+          image: docker.io/bitnami/envoy:1.35.1-debian-12-r0
+        - name: envoy-gateway
+          image: docker.io/bitnami/envoy-gateway:1.5.0-debian-12-r1
+        - name: envoy-ratelimit
+          image: docker.io/bitnami/envoy-ratelimit:2025.8.15-debian-12-r0
+      licenses: Apache-2.0
+      tanzuCategory: service
+    apiVersion: v2
+    appVersion: 1.5.0
+    created: "2025-08-20T20:38:28.480683988Z"
+    dependencies:
+    - name: common
+      repository: oci://ghcr.io/freebitnami/charts
+      tags:
+      - bitnami-common
+      version: 2.x.x
+    description: Envoy Gateway simplifies traffic management by extending Envoy Proxy's
+      features, offering Kubernetes Gateway API integration for secure, scalable,
+      and observable application routing
+    digest: 676be100cd34618c4933940c66bd283ea638ac8bdfeee7e86b37b185ecb03c28
+    home: https://bitnami.com
+    icon: https://bitnami.com/assets/stacks/envoy-gateway/img/envoy-gateway-stack-220x234.png
+    keywords:
+    - envoy-gateway
+    - traffic
+    - gateway
+    - ingress
+    maintainers:
+    - name: Broadcom, Inc. All Rights Reserved.
+      url: https://github.com/bitnami/charts
+    name: envoy-gateway
+    sources:
+    - https://github.com/freebitnami/charts
+    urls:
+    - oci://ghcr.io/freebitnami/charts/envoy-gateway:2.0.4
+    version: 2.0.4
+  - annotations:
+      category: Infrastructure
+      images: |
+        - name: envoy
           image: docker.io/bitnami/envoy:1.35.0-debian-12-r1
         - name: envoy-gateway
           image: docker.io/bitnami/envoy-gateway:1.5.0-debian-12-r1
@@ -1909,6 +2107,42 @@ entries:
       category: Infrastructure
       images: |
         - name: gitlab-runner
+          image: docker.io/bitnami/gitlab-runner:18.2.2-debian-12-r0
+        - name: gitlab-runner-helper
+          image: docker.io/bitnami/gitlab-runner-helper:18.2.2-debian-12-r0
+      licenses: Apache-2.0
+      tanzuCategory: application
+    apiVersion: v2
+    appVersion: 18.2.2
+    created: "2025-08-20T20:38:28.483007775Z"
+    dependencies:
+    - name: common
+      repository: oci://ghcr.io/freebitnami/charts
+      tags:
+      - bitnami-common
+      version: 2.x.x
+    description: Gitlab Runner is an auxiliary application for Gitlab installations.
+      Written in Go, it allows to run CI/CD jobs and send the results back to Gitlab.
+    digest: af96139d3f08ee5b35046e0ff8837a67b6cc161c24ab69e70870d9db2c47848e
+    home: https://bitnami.com
+    icon: https://dyltqmyl993wv.cloudfront.net/assets/stacks/gitlab-runner/img/gitlab-runner-stack-220x234.png
+    keywords:
+    - git
+    - ci
+    - deploy
+    maintainers:
+    - name: Broadcom, Inc. All Rights Reserved.
+      url: https://github.com/bitnami/charts
+    name: gitlab-runner
+    sources:
+    - https://github.com/freebitnami/charts
+    urls:
+    - oci://ghcr.io/freebitnami/charts/gitlab-runner:1.1.7
+    version: 1.1.7
+  - annotations:
+      category: Infrastructure
+      images: |
+        - name: gitlab-runner
           image: docker.io/bitnami/gitlab-runner:18.2.1-debian-12-r2
         - name: gitlab-runner-helper
           image: docker.io/bitnami/gitlab-runner-helper:18.2.1-debian-12-r2
@@ -2023,6 +2257,47 @@ entries:
         - name: configmap-reload
           image: docker.io/bitnami/configmap-reload:0.15.0-debian-12-r12
         - name: grafana-alloy
+          image: docker.io/bitnami/grafana-alloy:1.10.2-debian-12-r0
+      licenses: Apache-2.0
+    apiVersion: v2
+    appVersion: 1.10.2
+    created: "2025-08-20T20:38:28.485964693Z"
+    dependencies:
+    - name: common
+      repository: oci://ghcr.io/freebitnami/charts
+      tags:
+      - bitnami-common
+      version: 2.x.x
+    description: Grafana Alloy is an open source OpenTelemetry Collector distribution
+      with built-in Prometheus pipelines and support for metrics, logs, traces, and
+      profiles.
+    digest: 597406bddad3c42665f6c4d088d469a249e1e9461cea388359f31c2338261d2a
+    home: https://bitnami.com
+    icon: https://dyltqmyl993wv.cloudfront.net/assets/stacks/grafana-alloy/img/grafana-alloy-stack-220x234.png
+    keywords:
+    - grafana
+    - logging
+    - logs
+    - data
+    - collector
+    - tracing
+    - metrics
+    - infrastructure
+    maintainers:
+    - name: Broadcom, Inc. All Rights Reserved.
+      url: https://github.com/bitnami/charts
+    name: grafana-alloy
+    sources:
+    - https://github.com/freebitnami/charts
+    urls:
+    - oci://ghcr.io/freebitnami/charts/grafana-alloy:1.0.6
+    version: 1.0.6
+  - annotations:
+      category: Analytics
+      images: |
+        - name: configmap-reload
+          image: docker.io/bitnami/configmap-reload:0.15.0-debian-12-r12
+        - name: grafana-alloy
           image: docker.io/bitnami/grafana-alloy:1.10.1-debian-12-r1
       licenses: Apache-2.0
     apiVersion: v2
@@ -2059,6 +2334,45 @@ entries:
     - oci://ghcr.io/freebitnami/charts/grafana-alloy:1.0.5
     version: 1.0.5
   grafana-k6-operator:
+  - annotations:
+      category: Infrastructure
+      images: |
+        - name: grafana-k6
+          image: docker.io/bitnami/grafana-k6:1.2.2-debian-12-r0
+        - name: grafana-k6-operator
+          image: docker.io/bitnami/grafana-k6-operator:0.0.23-debian-12-r1
+        - name: os-shell
+          image: docker.io/bitnami/os-shell:12-debian-12-r51
+      licenses: Apache-2.0
+      tanzuCategory: service
+    apiVersion: v2
+    appVersion: 0.0.23
+    created: "2025-08-20T20:38:28.489207914Z"
+    dependencies:
+    - name: common
+      repository: oci://ghcr.io/freebitnami/charts
+      tags:
+      - bitnami-common
+      version: 2.x.x
+    description: Grafana k6 Operator is a Kubernetes operator that enables running
+      distributed k6 load tests in a cluster, automating test execution and scaling
+      for performance validation.
+    digest: 5f0a2e2a0abc7111110ace94193aa2669c373062b3544f2f6d1b0637221ee98b
+    home: https://bitnami.com
+    icon: https://bitnami.com/assets/stacks/grafana-k6-operator/img/grafana-k6-operator-stack-220x234.png
+    keywords:
+    - grafana-k6-operator
+    - operator
+    - tests
+    maintainers:
+    - name: Broadcom, Inc. All Rights Reserved.
+      url: https://github.com/bitnami/charts
+    name: grafana-k6-operator
+    sources:
+    - https://github.com/freebitnami/charts
+    urls:
+    - oci://ghcr.io/freebitnami/charts/grafana-k6-operator:1.0.10
+    version: 1.0.10
   - annotations:
       category: Infrastructure
       images: |
@@ -2579,6 +2893,48 @@ entries:
       category: Infrastructure
       images: |
         - name: jenkins
+          image: docker.io/bitnami/jenkins:2.516.2-debian-12-r0
+        - name: jenkins-agent
+          image: docker.io/bitnami/jenkins-agent:0.3327.0-debian-12-r1
+        - name: os-shell
+          image: docker.io/bitnami/os-shell:12-debian-12-r51
+      licenses: Apache-2.0
+      tanzuCategory: application
+    apiVersion: v2
+    appVersion: 2.516.2
+    created: "2025-08-20T20:38:28.491812946Z"
+    dependencies:
+    - name: common
+      repository: oci://ghcr.io/freebitnami/charts
+      tags:
+      - bitnami-common
+      version: 2.x.x
+    description: Jenkins is an open source Continuous Integration and Continuous Delivery
+      (CI/CD) server designed to automate the building, testing, and deploying of
+      any software project.
+    digest: 9ba0c3df646ee19c4e7b046c585a6bfab2538b9550425de33e2c6a9c2ceb78be
+    home: https://bitnami.com
+    icon: https://dyltqmyl993wv.cloudfront.net/assets/stacks/jenkins/img/jenkins-stack-220x234.png
+    keywords:
+    - jenkins
+    - ci
+    - cd
+    - http
+    - web
+    - application
+    maintainers:
+    - name: Broadcom, Inc. All Rights Reserved.
+      url: https://github.com/bitnami/charts
+    name: jenkins
+    sources:
+    - https://github.com/freebitnami/charts
+    urls:
+    - oci://ghcr.io/freebitnami/charts/jenkins:13.6.17
+    version: 13.6.17
+  - annotations:
+      category: Infrastructure
+      images: |
+        - name: jenkins
           image: docker.io/bitnami/jenkins:2.516.1-debian-12-r2
         - name: jenkins-agent
           image: docker.io/bitnami/jenkins-agent:0.3327.0-debian-12-r1
@@ -2706,6 +3062,46 @@ entries:
     - oci://ghcr.io/freebitnami/charts/kafka:32.4.2
     version: 32.4.2
   keycloak:
+  - annotations:
+      category: DeveloperTools
+      images: |
+        - name: keycloak
+          image: docker.io/bitnami/keycloak:26.3.3-debian-12-r0
+        - name: keycloak-config-cli
+          image: docker.io/bitnami/keycloak-config-cli:6.4.0-debian-12-r11
+      licenses: Apache-2.0
+      tanzuCategory: application
+    apiVersion: v2
+    appVersion: 26.3.3
+    created: "2025-08-20T20:38:28.499769127Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: oci://ghcr.io/freebitnami/charts
+      version: 16.x.x
+    - name: common
+      repository: oci://ghcr.io/freebitnami/charts
+      tags:
+      - bitnami-common
+      version: 2.x.x
+    description: Keycloak is a high performance Java-based identity and access management
+      solution. It lets developers add an authentication layer to their applications
+      with minimum effort.
+    digest: de44d1afa7f28529de6a0fa366ca5fb9155a8160099e9ded758ce08073cfa4aa
+    home: https://bitnami.com
+    icon: https://dyltqmyl993wv.cloudfront.net/assets/stacks/keycloak/img/keycloak-stack-220x234.png
+    keywords:
+    - keycloak
+    - access-management
+    maintainers:
+    - name: Broadcom, Inc. All Rights Reserved.
+      url: https://github.com/bitnami/charts
+    name: keycloak
+    sources:
+    - https://github.com/freebitnami/charts
+    urls:
+    - oci://ghcr.io/freebitnami/charts/keycloak:25.1.2
+    version: 25.1.2
   - annotations:
       category: DeveloperTools
       images: |
@@ -4582,6 +4978,43 @@ entries:
       category: Analytics
       images: |
         - name: opensearch
+          image: docker.io/bitnami/opensearch:3.2.0-debian-12-r0
+        - name: opensearch-dashboards
+          image: docker.io/bitnami/opensearch-dashboards:3.2.0-debian-12-r0
+        - name: os-shell
+          image: docker.io/bitnami/os-shell:12-debian-12-r51
+      licenses: Apache-2.0
+      tanzuCategory: service
+    apiVersion: v2
+    appVersion: 3.2.0
+    created: "2025-08-20T20:38:28.507370301Z"
+    dependencies:
+    - name: common
+      repository: oci://ghcr.io/freebitnami/charts
+      tags:
+      - bitnami-common
+      version: 2.x.x
+    description: OpenSearch is a scalable open-source solution for search, analytics,
+      and observability. Features full-text queries, natural language processing,
+      custom dictionaries, amongst others.
+    digest: 4146c1ec3fa2d42ef21738b5972885d5879e5e403ee5b5a0c9e65d5eb2d87aa1
+    home: https://bitnami.com
+    icon: https://dyltqmyl993wv.cloudfront.net/assets/stacks/opensearch/img/opensearch-stack-220x234.png
+    keywords:
+    - opensearch
+    maintainers:
+    - name: Broadcom, Inc. All Rights Reserved.
+      url: https://github.com/bitnami/charts
+    name: opensearch
+    sources:
+    - https://github.com/freebitnami/charts
+    urls:
+    - oci://ghcr.io/freebitnami/charts/opensearch:2.0.10
+    version: 2.0.10
+  - annotations:
+      category: Analytics
+      images: |
+        - name: opensearch
           image: docker.io/bitnami/opensearch:3.1.0-debian-12-r2
         - name: opensearch-dashboards
           image: docker.io/bitnami/opensearch-dashboards:3.1.0-debian-12-r2
@@ -4864,6 +5297,53 @@ entries:
     - oci://ghcr.io/freebitnami/charts/postgresql:16.7.26
     version: 16.7.26
   postgresql-ha:
+  - annotations:
+      category: Database
+      images: |
+        - name: os-shell
+          image: docker.io/bitnami/os-shell:12-debian-12-r51
+        - name: pgpool
+          image: docker.io/bitnami/pgpool:4.6.2-debian-12-r7
+        - name: postgres-exporter
+          image: docker.io/bitnami/postgres-exporter:0.17.1-debian-12-r16
+        - name: postgresql-repmgr
+          image: docker.io/bitnami/postgresql-repmgr:17.6.0-debian-12-r1
+      licenses: Apache-2.0
+      tanzuCategory: service
+    apiVersion: v2
+    appVersion: 17.6.0
+    created: "2025-08-20T20:38:28.512693949Z"
+    dependencies:
+    - name: common
+      repository: oci://ghcr.io/freebitnami/charts
+      tags:
+      - bitnami-common
+      version: 2.x.x
+    description: This PostgreSQL cluster solution includes the PostgreSQL replication
+      manager, an open-source tool for managing replication and failover on PostgreSQL
+      clusters.
+    digest: 95b968a255982c276614220b5c43877e0aee17d8fe1797cdff3867a3b9736879
+    home: https://bitnami.com
+    icon: https://dyltqmyl993wv.cloudfront.net/assets/stacks/postgresql/img/postgresql-stack-220x234.png
+    keywords:
+    - postgresql
+    - repmgr
+    - pgpool
+    - postgres
+    - database
+    - sql
+    - replication
+    - cluster
+    - high availability
+    maintainers:
+    - name: Broadcom, Inc. All Rights Reserved.
+      url: https://github.com/bitnami/charts
+    name: postgresql-ha
+    sources:
+    - https://github.com/freebitnami/charts
+    urls:
+    - oci://ghcr.io/freebitnami/charts/postgresql-ha:16.3.0
+    version: 16.3.0
   - annotations:
       category: Database
       images: |
@@ -5392,6 +5872,43 @@ entries:
       category: Database
       images: |
         - name: os-shell
+          image: docker.io/bitnami/os-shell:12-debian-12-r51
+        - name: scylladb
+          image: docker.io/bitnami/scylladb:2025.2.2-debian-12-r0
+      licenses: Apache-2.0
+      tanzuCategory: service
+    apiVersion: v2
+    appVersion: 2025.2.2
+    created: "2025-08-20T20:38:28.515324128Z"
+    dependencies:
+    - name: common
+      repository: oci://ghcr.io/freebitnami/charts
+      tags:
+      - bitnami-common
+      version: 2.x.x
+    description: ScyllaDB is an open-source, distributed NoSQL wide-column data store.
+      Written in C++, it is designed for high throughput and low latency, compatible
+      with Apache Cassandra.
+    digest: 4ac5352ba01ad535af04ea408336bb81d89a8ad6d3ea1fddf1f953cad718a1d8
+    home: https://bitnami.com
+    icon: https://dyltqmyl993wv.cloudfront.net/assets/stacks/scylladb/img/scylladb-stack-220x234.png
+    keywords:
+    - scylladb
+    - database
+    - nosql
+    maintainers:
+    - name: Broadcom, Inc. All Rights Reserved.
+      url: https://github.com/bitnami/charts
+    name: scylladb
+    sources:
+    - https://github.com/freebitnami/charts
+    urls:
+    - oci://ghcr.io/freebitnami/charts/scylladb:5.0.5
+    version: 5.0.5
+  - annotations:
+      category: Database
+      images: |
+        - name: os-shell
           image: docker.io/bitnami/os-shell:12-debian-12-r50
         - name: scylladb
           image: docker.io/bitnami/scylladb:2025.2.1-debian-12-r4
@@ -5779,6 +6296,45 @@ entries:
       category: MachineLearning
       images: |
         - name: tensorflow-resnet
+          image: docker.io/bitnami/tensorflow-resnet:2.19.1-debian-12-r0
+        - name: tensorflow-serving
+          image: docker.io/bitnami/tensorflow-serving:2.19.1-debian-12-r0
+      licenses: Apache-2.0
+      tanzuCategory: application
+    apiVersion: v2
+    appVersion: 2.19.1
+    created: "2025-08-20T20:38:28.517003673Z"
+    dependencies:
+    - name: common
+      repository: oci://ghcr.io/freebitnami/charts
+      tags:
+      - bitnami-common
+      version: 2.x.x
+    description: TensorFlow ResNet is a client utility for use with TensorFlow Serving
+      and ResNet models.
+    digest: df1406046e4cff590004607c80db65a34bd3b435381a2416ad24724971b7c5f4
+    home: https://bitnami.com
+    icon: https://dyltqmyl993wv.cloudfront.net/assets/stacks/tensorflow-inception/img/tensorflow-inception-stack-220x234.png
+    keywords:
+    - tensorflow
+    - serving
+    - resnet
+    - machine
+    - learning
+    - library
+    maintainers:
+    - name: Broadcom, Inc. All Rights Reserved.
+      url: https://github.com/bitnami/charts
+    name: tensorflow-resnet
+    sources:
+    - https://github.com/freebitnami/charts
+    urls:
+    - oci://ghcr.io/freebitnami/charts/tensorflow-resnet:4.3.14
+    version: 4.3.14
+  - annotations:
+      category: MachineLearning
+      images: |
+        - name: tensorflow-resnet
           image: docker.io/bitnami/tensorflow-resnet:2.19.0-debian-12-r4
         - name: tensorflow-serving
           image: docker.io/bitnami/tensorflow-serving:2.19.0-debian-12-r5
@@ -6071,6 +6627,50 @@ entries:
     - oci://ghcr.io/freebitnami/charts/vault:1.8.2
     version: 1.8.2
   victoriametrics:
+  - annotations:
+      category: Infrastructure
+      images: |
+        - name: os-shell
+          image: docker.io/bitnami/os-shell:12-debian-12-r50
+        - name: victoriametrics-vmagent
+          image: docker.io/bitnami/victoriametrics-vmagent:1.124.0-debian-12-r0
+        - name: victoriametrics-vmalert
+          image: docker.io/bitnami/victoriametrics-vmalert:1.124.0-debian-12-r0
+        - name: victoriametrics-vmauth
+          image: docker.io/bitnami/victoriametrics-vmauth:1.124.0-debian-12-r0
+        - name: victoriametrics-vminsert
+          image: docker.io/bitnami/victoriametrics-vminsert:1.124.0-debian-12-r0
+        - name: victoriametrics-vmselect
+          image: docker.io/bitnami/victoriametrics-vmselect:1.124.0-debian-12-r0
+        - name: victoriametrics-vmstorage
+          image: docker.io/bitnami/victoriametrics-vmstorage:1.124.0-debian-12-r0
+      licenses: Apache-2.0
+    apiVersion: v2
+    appVersion: 1.124.0
+    created: "2025-08-20T20:38:28.524023974Z"
+    dependencies:
+    - name: common
+      repository: oci://ghcr.io/freebitnami/charts
+      tags:
+      - bitnami-common
+      version: 2.x.x
+    description: VictoriaMetrics is a fast, cost-effective, and scalable monitoring
+      solution and time series database, compatible with Prometheus and Graphite
+    digest: 7eea1560eb7e38c331cea9cf4e092e3090c8c1365485ff307abd29bdefd20fad
+    home: https://bitnami.com
+    icon: https://dyltqmyl993wv.cloudfront.net/assets/stacks/victoriametrics/img/victoriametrics-stack-220x234.png
+    keywords:
+    - monitoring
+    - metrics
+    maintainers:
+    - name: Broadcom, Inc. All Rights Reserved.
+      url: https://github.com/bitnami/charts
+    name: victoriametrics
+    sources:
+    - https://github.com/freebitnami/charts
+    urls:
+    - oci://ghcr.io/freebitnami/charts/victoriametrics:0.1.31
+    version: 0.1.31
   - annotations:
       category: Infrastructure
       images: |
@@ -6416,4 +7016,4 @@ entries:
     urls:
     - oci://ghcr.io/freebitnami/charts/zookeeper:13.8.7
     version: 13.8.7
-generated: "2025-08-19T21:03:34.126704616Z"
+generated: "2025-08-20T20:38:28.434242727Z"
