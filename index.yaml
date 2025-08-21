@@ -5,6 +5,52 @@ entries:
       category: WorkFlow
       images: |
         - name: airflow
+          image: docker.io/bitnami/airflow:3.0.5-debian-12-r0
+        - name: statsd-exporter
+          image: docker.io/bitnami/statsd-exporter:0.28.0-debian-12-r24
+      licenses: Apache-2.0
+      tanzuCategory: service
+    apiVersion: v2
+    appVersion: 3.0.5
+    created: "2025-08-21T09:13:18.179487536Z"
+    dependencies:
+    - condition: redis.enabled
+      name: redis
+      repository: oci://ghcr.io/freebitnami/charts
+      version: 22.x.x
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: oci://ghcr.io/freebitnami/charts
+      version: 16.x.x
+    - name: common
+      repository: oci://ghcr.io/freebitnami/charts
+      tags:
+      - bitnami-common
+      version: 2.x.x
+    description: Apache Airflow is a tool to express and execute workflows as directed
+      acyclic graphs (DAGs). It includes utilities to schedule tasks, monitor task
+      progress and handle task dependencies.
+    digest: a7e8028de79e629a743e1c41fb84be1eff21c9498e9a66676adab794b66556e3
+    home: https://bitnami.com
+    icon: https://dyltqmyl993wv.cloudfront.net/assets/stacks/airflow/img/airflow-stack-220x234.png
+    keywords:
+    - apache
+    - airflow
+    - workflow
+    - dag
+    maintainers:
+    - name: Broadcom, Inc. All Rights Reserved.
+      url: https://github.com/bitnami/charts
+    name: airflow
+    sources:
+    - https://github.com/freebitnami/charts
+    urls:
+    - oci://ghcr.io/freebitnami/charts/airflow:25.0.2
+    version: 25.0.2
+  - annotations:
+      category: WorkFlow
+      images: |
+        - name: airflow
           image: docker.io/bitnami/airflow:3.0.4-debian-12-r1
         - name: statsd-exporter
           image: docker.io/bitnami/statsd-exporter:0.28.0-debian-12-r24
@@ -1248,6 +1294,48 @@ entries:
     - oci://ghcr.io/freebitnami/charts/contour:21.1.3
     version: 21.1.3
   deepspeed:
+  - annotations:
+      category: MachineLearning
+      images: |
+        - name: deepspeed
+          image: docker.io/bitnami/deepspeed:0.17.5-debian-12-r0
+        - name: git
+          image: docker.io/bitnami/git:2.51.0-debian-12-r0
+        - name: os-shell
+          image: docker.io/bitnami/os-shell:12-debian-12-r51
+      licenses: Apache-2.0
+      tanzuCategory: clusterUtility
+    apiVersion: v2
+    appVersion: 0.17.5
+    created: "2025-08-21T09:13:18.182110861Z"
+    dependencies:
+    - name: common
+      repository: oci://ghcr.io/freebitnami/charts
+      tags:
+      - bitnami-common
+      version: 2.x.x
+    description: DeepSpeed is deep learning software suite for empowering ChatGPT-like
+      model training. Features dense or sparse model inference, high throughput and
+      high compression.
+    digest: 675b178a8a352b89a7d179a2e415ba5c69d93a57b64c9fdb3dd7a77bfe197365
+    home: https://bitnami.com
+    icon: https://dyltqmyl993wv.cloudfront.net/assets/stacks/deepspeed/img/deepspeed-stack-220x234.png
+    keywords:
+    - deepspeed
+    - pytorch
+    - python
+    - machine
+    - learning
+    maintainers:
+    - name: Broadcom, Inc. All Rights Reserved.
+      url: https://github.com/bitnami/charts
+    name: deepspeed
+    sources:
+    - https://github.com/freebitnami/charts
+    - https://github.com/freebitnami/charts
+    urls:
+    - oci://ghcr.io/freebitnami/charts/deepspeed:2.3.50
+    version: 2.3.50
   - annotations:
       category: MachineLearning
       images: |
@@ -7016,4 +7104,4 @@ entries:
     urls:
     - oci://ghcr.io/freebitnami/charts/zookeeper:13.8.7
     version: 13.8.7
-generated: "2025-08-20T20:38:28.434242727Z"
+generated: "2025-08-21T09:13:18.162526011Z"
