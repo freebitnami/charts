@@ -6759,6 +6759,43 @@ entries:
         - name: os-shell
           image: docker.io/bitnami/os-shell:12-debian-12-r51
         - name: scylladb
+          image: docker.io/bitnami/scylladb:2025.2.2-debian-12-r2
+      licenses: Apache-2.0
+      tanzuCategory: service
+    apiVersion: v2
+    appVersion: 2025.2.2
+    created: "2025-08-25T09:02:11.891660347Z"
+    dependencies:
+    - name: common
+      repository: oci://ghcr.io/freebitnami/charts
+      tags:
+      - bitnami-common
+      version: 2.x.x
+    description: ScyllaDB is an open-source, distributed NoSQL wide-column data store.
+      Written in C++, it is designed for high throughput and low latency, compatible
+      with Apache Cassandra.
+    digest: d272e9a29960a6a07500fe64033ee6effa2be940ae52f56b6739e3458ba8f92b
+    home: https://bitnami.com
+    icon: https://dyltqmyl993wv.cloudfront.net/assets/stacks/scylladb/img/scylladb-stack-220x234.png
+    keywords:
+    - scylladb
+    - database
+    - nosql
+    maintainers:
+    - name: Broadcom, Inc. All Rights Reserved.
+      url: https://github.com/bitnami/charts
+    name: scylladb
+    sources:
+    - https://github.com/freebitnami/charts
+    urls:
+    - oci://ghcr.io/freebitnami/charts/scylladb:5.0.6
+    version: 5.0.6
+  - annotations:
+      category: Database
+      images: |
+        - name: os-shell
+          image: docker.io/bitnami/os-shell:12-debian-12-r51
+        - name: scylladb
           image: docker.io/bitnami/scylladb:2025.2.2-debian-12-r0
       licenses: Apache-2.0
       tanzuCategory: service
@@ -7984,4 +8021,4 @@ entries:
     urls:
     - oci://ghcr.io/freebitnami/charts/zookeeper:13.8.7
     version: 13.8.7
-generated: "2025-08-23T18:26:22.927839368Z"
+generated: "2025-08-25T09:02:11.888547257Z"
