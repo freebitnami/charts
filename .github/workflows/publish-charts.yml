@@ -19,12 +19,12 @@ jobs:
       packages: write
     steps:
       - name: Check out ref branch
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
         with:
           path: ref-branch
           submodules: 'true'
       - name: Check out gh-pages branch
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
         with:
           ref: gh-pages
           path: gh-pages
